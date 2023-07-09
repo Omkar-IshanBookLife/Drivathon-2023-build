@@ -1,13 +1,13 @@
 <script type="ts">
     import { onMount } from "svelte";
-    import {pb, currentUser} from "../pocketbase"
+    import {pb, currentUser, loading} from "../pocketbase"
 
     let latestDrive = {}
     let description = ""
 
     onMount(async () => {
         latestDrive = await pb.collection("campaigns").getFirstListItem("", {sort: "-created", expand:"createdUser"})
-        description = latestDrive.description.slice(0,300) + "..."
+        description = latestDrive.description.slice(0,600) + "..."
     })
 </script>
 
@@ -36,7 +36,7 @@
     </div>
     <hr />
     <div id="latestDrive">
-        <div class="card w-50">
+        <div class="card vw-50">
             <div class="card-header"><h5>Latest</h5></div>
             <img
                 src="https://drivathon.pockethost.io/api/files/campaigns/{latestDrive.id}/{latestDrive.image}"

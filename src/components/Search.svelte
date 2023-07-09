@@ -1,35 +1,40 @@
-<script type="ts">
+<script lang="ts">
     import { onMount } from "svelte";
     import { pb, currentUser, loading } from "../pocketbase";
+    
+    export let search = "";
 
     let drives = [];
 
     onMount(async () => {
-        drives = await pb.collection("campaigns").getFullList({ sort: "-created", expand: "createdUser" })
-        console.log(drives)
-    })
+        drives = await pb
+            .collection("campaigns")
+            .getFullList({ sort: "-created", expand: "createdUser", filter: `title~"${search}"` });
+        console.log(drives);
+    });
 </script>
 
 <main>
-    <h3>All Campaigns or Drives to Join</h3>
+    <h3>Search Results for: {search}</h3>
     <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-        explicabo sunt repellendus laborum architecto perspiciatis omnis, odio
-        voluptatibus sequi culpa, iste, molestiae ea praesentium.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur
+        maiores recusandae iure, praesentium molestias, culpa et obcaecati
+        excepturi deleniti enim voluptas reiciendis, temporibus cupiditate.
+        Laboriosam assumenda sint quas itaque eveniet.
     </p>
-    <hr>
+    <hr />
     <div id="drives">
         {#each drives as drive}
-        <div class="card min-vw-25 mb-4">
+        <div class="card vw-50 mb-4">
             <img
                 src="https://drivathon.pockethost.io/api/files/campaigns/{drive.id}/{drive.image}"
-                class="card-img-top img-fluid w-50-sm"
+                class="card-img-top img-fluid"
                 alt="tweet-img"
             />
             <div class="card-body">
                 <h5>{drive.title}</h5>
                 <p>
-                    {@html drive.description?.slice(0,300)+"..." }
+                    {@html drive.description?.slice(0,600)+"..." }
                 </p>
                 <p>Posted by, {drive.expand?.createdUser?.name}</p>
                 <div class="btn-group">
@@ -46,7 +51,7 @@
             </div>
             <div class="card-footer">
                 <p class="text-muted">
-                    posted on {drive.created} 
+                    posted on {drive.created}
                 </p>
             </div>
         </div>

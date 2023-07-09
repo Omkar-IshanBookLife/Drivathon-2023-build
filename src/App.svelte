@@ -1,18 +1,23 @@
 <script lang="ts">
   import { Link, Router, Route, navigate } from "svelte-navigator";
-  import { pb, currentUser } from "./pocketbase";
+  import { pb, currentUser, loading } from "./pocketbase";
   import Home from "./components/Home.svelte";
   import Drives from "./components/Drives.svelte";
   import About from "./components/About.svelte";
   import Drive from "./components/Drive.svelte";
   import New from "./components/New.svelte";
   import Profile from "./components/Profile.svelte";
+  import Search from "./components/Search.svelte";
+  import Chat from "./components/Chat.svelte";
+  import Loader from "./components/Loader.svelte";
 
   let loginEmailAddr: string;
   let loginPassword: string;
   let signUpEmailAddr: string;
   let signUpPassword: string;
   let signUpUsername: string;
+  let search: string;
+  let forgotPasswordEmail: string;
 
   async function login() {
     const user = await pb
@@ -39,21 +44,40 @@
     }
   }
 
-  async function loginWithGoogle(){
-    const user = await pb.collection("users").authWithOAuth2({ provider: "google" })
-    console.log(user)
+  async function loginWithGoogle() {
+    const user = await pb
+      .collection("users")
+      .authWithOAuth2({ provider: "google" });
+    console.log(user);
+  }
+
+  async function loginWithFacebook() {
+    const user = await pb
+      .collection("users")
+      .authWithOAuth2({ provider: "facebook" });
+    console.log(user);
   }
 
   async function logout() {
     await pb.authStore.clear();
-    navigate("/", {replace:true})
-    window.location.reload()
+    navigate("/", { replace: true });
+    window.location.reload();
+  }
+
+  async function searchResultPage() {
+    navigate(`/search/${search}`, { replace: true });
+    window.location.reload();
+  }
+
+  async function requestPasswordChange() {
+    window.alert("Password Change Email Sent");
+    await pb.collection("users").requestPasswordReset(loginEmailAddr);
   }
 </script>
 
 <Router>
   <main>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
       <div class="container">
         <a class="navbar-brand" href="/">Drivathon 🍃</a>
         <button
@@ -89,9 +113,25 @@
               </li>
             </ul>
             <div class="ms-auto d-flex">
-              <button class="btn btn-danger" type="button" data-bs-toggle="modal"
-              data-bs-target="#logoutModal"
-                >Logout</button
+              <form class="d-flex me-2" role="search" on:submit|preventDefault>
+                <input
+                  class="form-control me-2"
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                  bind:value={search}
+                />
+                <button
+                  class="btn btn-success"
+                  type="submit"
+                  on:click={searchResultPage}>Search</button
+                >
+              </form>
+              <button
+                class="btn btn-danger"
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#logoutModal">Logout</button
               >
             </div>
           {:else}
@@ -123,7 +163,12 @@
                   data-bs-target="#loginModal">Login</button
                 >
               </div>
-              <button class="btn btn-success" on:click={loginWithGoogle}>Login With <i class="fab fa-google"></i></button>
+              <button class="btn btn-success me-2" on:click={loginWithGoogle}
+                ><i class="fab fa-google" /></button
+              >
+              <button class="btn btn-success me-2" on:click={loginWithFacebook}
+                ><i class="fab fa-facebook" /></button
+              >
             </div>
           {/if}
         </div>
@@ -132,13 +177,19 @@
 
     <section class="p-5 my-4">
       <div class="container">
-        {#if $currentUser}
+        {#if $loading}
+          <div class="d-flex align-items-center justify-content-center">
+            <Loader />
+          </div>
+        {:else if $currentUser}
           <Route path="/" component={Home} />
           <Route path="drives" component={Drives} />
           <Route path="drive/:id" component={Drive} />
           <Route path="new" component={New} />
           <Route path="about" component={About} />
           <Route path="profile" component={Profile} />
+          <Route path="search/:search" component={Search} />
+          <Route path="chat/:id" component={Chat} />
         {:else}
           <Route path="/" component={Home} />
           <Route path="drives" component={Drives} />
@@ -265,6 +316,13 @@
                     bind:value={loginPassword}
                   />
                 </div>
+                <div>
+                  <a
+                    data-bs-toggle="modal"
+                    data-bs-target="#forgotPasswordModal"
+                    href="/">Forgot Password?</a
+                  >
+                </div>
               </form>
             </div>
             <div class="modal-footer">
@@ -284,22 +342,92 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="logoutModal"
+      tabindex="-1"
+      aria-labelledby="logoutModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="logoutModalLabel">Modal title</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h1 class="modal-title fs-5" id="logoutModalLabel">Logout Modal</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            />
           </div>
-          <div class="modal-body">
-            Are You Sure You Want To Logout?
-          </div>
+          <div class="modal-body">Are You Sure You Want To Logout?</div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" on:click={logout} data-bs-dismiss="modal">Logout</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal">Close</button
+            >
+            <button
+              type="button"
+              class="btn btn-primary"
+              on:click={logout}
+              data-bs-dismiss="modal">Logout</button
+            >
           </div>
         </div>
       </div>
+    </div>
+    <div
+      class="modal fade"
+      id="forgotPasswordModal"
+      tabindex="-1"
+      aria-labelledby="logoutModalLabel"
+      aria-hidden="true"
+    >
+      <form on:submit|preventDefault>
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="forgotPasswordModal">
+                Forgot Password
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div class="modal-body">
+              <div>
+                <label for="exampleFormControlInput1" class="form-label"
+                  >Email Address Associated with Email Address</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="name@example.com"
+                  bind:value={forgotPasswordEmail}
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">Close</button
+              >
+              <button
+                type="submit"
+                class="btn btn-primary"
+                on:click={requestPasswordChange}
+                data-bs-dismiss="modal">Forgot Password</button
+              >
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </main>
 </Router>

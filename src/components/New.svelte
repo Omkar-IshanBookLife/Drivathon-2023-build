@@ -12,13 +12,8 @@
     let conf = {
         height: 500,
         plugins: [
-            "a11ychecker",
             "advlist",
-            "advcode",
-            "advtable",
             "autolink",
-            "checklist",
-            "export",
             "lists",
             "link",
             "image",
@@ -27,9 +22,7 @@
             "anchor",
             "searchreplace",
             "visualblocks",
-            "powerpaste",
             "fullscreen",
-            "formatpainter",
             "insertdatetime",
             "media",
             "table",
@@ -72,14 +65,9 @@
         </div>
         <hr />
         <div class="mb-3 d-flex align-items-center justify-content-between">
-            <label for="#imageFileUpload" class="form-label">Photo:</label>
-            <input
-                type="file"
-                name="image"
-                id="imageFileUpload"
-                class="btn btn-primary"
-                bind:files
-            />
+
+                <label for="formFile" class="form-label">Photo: </label>
+                <input class="form-control w-50 btn btn-primary" type="file" id="formFile" name="image" bind:files>
         </div>
         <hr />
         <div class="mb-3">
@@ -90,6 +78,7 @@
                 id="mapURlFOrmControl"
                 bind:value={map}
             />
+            
         </div>
         <button class="btn btn-primary" type="submit" on:click={submitCampaign}
             >Submit</button
