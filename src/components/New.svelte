@@ -50,7 +50,7 @@
 <main>
     <form on:submit|preventDefault>
         <div class="mb-3">
-            <label for="titleFormControl" class="form-label">Title</label>
+            <h4 class="form-label">Title</h4>
             <input
                 type="text"
                 class="form-control"
@@ -60,18 +60,18 @@
         </div>
         <hr />
         <div class="mb-3">
-            <p class="form-label">Description</p>
+            <h4 class="form-label">Description</h4>
             <Editor {apiKey} {conf} bind:value={description} />
         </div>
         <hr />
         <div class="mb-3 d-flex align-items-center justify-content-between">
 
-                <label for="formFile" class="form-label">Photo: </label>
+                <h4 class="form-label">Photo: </h4>
                 <input class="form-control w-50 btn btn-primary" type="file" id="formFile" name="image" bind:files>
         </div>
         <hr />
         <div class="mb-3">
-            <label for="mapURlFOrmControl" class="form-label">Map URL</label>
+            <h4 class="form-label">Map URL</h4>
             <input
                 type="url"
                 class="form-control"
