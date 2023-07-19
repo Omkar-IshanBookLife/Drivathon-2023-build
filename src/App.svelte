@@ -58,6 +58,20 @@
     console.log(user);
   }
 
+  async function loginWithDiscord() {
+    const user = await pb
+      .collection("users")
+      .authWithOAuth2({ provider:"discord" })
+    console.log(user)
+  }
+
+  async function loginWithGithub() {
+    const user = await pb
+      .collection("users")
+      .authWithOAuth2({ provider:"github" })
+    console.log(user)
+  }
+
   async function logout() {
     await pb.authStore.clear();
     navigate("/", { replace: true });
@@ -168,6 +182,12 @@
               >
               <button class="btn btn-success me-2" on:click={loginWithFacebook}
                 ><i class="fab fa-facebook" /></button
+              >
+              <button class="btn btn-success me-2" on:click={loginWithDiscord}
+                ><i class="fab fa-discord" /></button
+              >
+              <button class="btn btn-success me-2" on:click={loginWithGithub}
+                ><i class="fab fa-github" /></button
               >
             </div>
           {/if}
