@@ -1,3 +1,6 @@
+<!-- svelte-ignore a11y-missing-attribute -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+
 <script lang="ts">
   import { Link, Router, Route, navigate } from "svelte-navigator";
   import { pb, currentUser, loading } from "./pocketbase";
@@ -177,18 +180,17 @@
                   data-bs-target="#loginModal">Login</button
                 >
               </div>
-              <button class="btn btn-success me-2" on:click={loginWithGoogle}
-                ><i class="fab fa-google" /></button
-              >
-              <button class="btn btn-success me-2" on:click={loginWithFacebook}
-                ><i class="fab fa-facebook" /></button
-              >
-              <button class="btn btn-success me-2" on:click={loginWithDiscord}
-                ><i class="fab fa-discord" /></button
-              >
-              <button class="btn btn-success me-2" on:click={loginWithGithub}
-                ><i class="fab fa-github" /></button
-              >
+              <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Sign In With
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" on:click={loginWithGoogle}>Google <i class="fab fa-google" /></a></li>
+                  <li><a class="dropdown-item" on:click={loginWithFacebook}>Facebook <i class="fab fa-facebook" /></a></li>
+                  <li><a class="dropdown-item" on:click={loginWithGithub}>Github <i class="fab fa-github" /></a></li>
+                  <li><a class="dropdown-item" on:click={loginWithDiscord}>Discord <i class="fab fa-discord" /></a></li>
+                </ul>
+              </div>
             </div>
           {/if}
         </div>
