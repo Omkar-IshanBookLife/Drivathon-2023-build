@@ -13,6 +13,7 @@
   import Search from "./components/Search.svelte";
   import Chat from "./components/Chat.svelte";
   import Loader from "./components/Loader.svelte";
+    import Feedback from "./components/Feedback.svelte";
 
   let loginEmailAddr: string;
   let loginPassword: string;
@@ -123,6 +124,9 @@
                 <Link class="nav-link" to="/new">New</Link>
               </li>
               <li class="nav-item">
+                <Link class="nav-link" to="/feedback">Feedback</Link>
+              </li>
+              <li class="nav-item">
                 <Link class="nav-link" to="/about">About</Link>
               </li>
               <li class="nav-item">
@@ -160,6 +164,9 @@
               </li>
               <li class="nav-item">
                 <Link class="nav-link" to="/drives">Drives</Link>
+              </li>
+              <li class="nav-item">
+                <Link class="nav-link" to="/feedback">Feedback</Link>
               </li>
               <li class="nav-item">
                 <Link class="nav-link" to="/about">About</Link>
@@ -212,11 +219,13 @@
           <Route path="profile" component={Profile} />
           <Route path="search/:search" component={Search} />
           <Route path="chat/:id" component={Chat} />
+          <Route path="feedback" component={Feedback}/>
         {:else}
           <Route path="/" component={Home} />
           <Route path="drives" component={Drives} />
           <Route path="drive/:id" component={Drive} />
           <Route path="about" component={About} />
+          <Route path="feedback" component={Feedback}/>
         {/if}
       </div>
     </section>

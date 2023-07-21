@@ -3,6 +3,8 @@
 </script>
 
 <main>
-    <Jellyfish size="120" color="#d13480" unit="px" duration="1s"/>
-    <p class="text-center">Loading</p>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <Jellyfish size="120" color="#d13480" unit="px" duration="1s"/>
+        <h4>Loading</h4>
+    </div>
 </main>
