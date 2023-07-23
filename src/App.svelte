@@ -115,26 +115,26 @@
             <ul class="navbar-nav">
               <li class="nav-item">
                 <Link class="nav-link active" aria-current="page" to="/"
-                  >Home</Link
+                  >Home <i class="fas fa-home"></i></Link
                 >
               </li>
               <li class="nav-item">
-                <Link class="nav-link" to="/drives">Drives</Link>
+                <Link class="nav-link" to="/drives">Drives <i class="fas fa-campfire"></i></Link>
               </li>
               <li class="nav-item">
-                <Link class="nav-link" to="/chats">Chats</Link>
+                <Link class="nav-link" to="/chats">Chats <i class="fal fa-comments-alt"></i></Link>
               </li>
               <li class="nav-item">
-                <Link class="nav-link" to="/new">New</Link>
+                <Link class="nav-link" to="/new">New <i class="fas fa-plus-circle"></i></Link>
               </li>
               <li class="nav-item">
-                <Link class="nav-link" to="/feedback">Feedback</Link>
+                <Link class="nav-link" to="/feedback">Feedback  <i class="far fa-comment-alt-dots"></i></Link>
               </li>
               <li class="nav-item">
-                <Link class="nav-link" to="/about">About</Link>
+                <Link class="nav-link" to="/about">About <i class="fas fa-address-card"></i></Link>
               </li>
               <li class="nav-item">
-                <Link class="nav-link" to="/profile">Profile</Link>
+                <Link class="nav-link" to="/profile">Profile <i class="fas fa-user-circle"></i></Link>
               </li>
             </ul>
             <div class="ms-auto d-flex">
@@ -149,31 +149,31 @@
                 <button
                   class="btn btn-success"
                   type="submit"
-                  on:click={searchResultPage}>Search</button
+                  on:click={searchResultPage}>Search <i class="fas fa-search"></i></button
                 >
               </form>
               <button
                 class="btn btn-danger"
                 type="button"
                 data-bs-toggle="modal"
-                data-bs-target="#logoutModal">Logout</button
+                data-bs-target="#logoutModal">Logout <i class="fas fa-sign-out-alt"></i></button
               >
             </div>
           {:else}
             <ul class="navbar-nav">
               <li class="nav-item">
                 <Link class="nav-link active" aria-current="page" to="/"
-                  >Home</Link
+                  >Home <i class="fas fa-home"></i></Link
                 >
               </li>
               <li class="nav-item">
-                <Link class="nav-link" to="/drives">Drives</Link>
+                <Link class="nav-link" to="/drives">Drives <i class="fas fa-campfire"></i></Link>
               </li>
               <li class="nav-item">
-                <Link class="nav-link" to="/feedback">Feedback</Link>
+                <Link class="nav-link" to="/feedback">Feedback <i class="far fa-comment-alt-dots"></i></Link>
               </li>
               <li class="nav-item">
-                <Link class="nav-link" to="/about">About</Link>
+                <Link class="nav-link" to="/about">About <i class="fas fa-address-card"></i></Link>
               </li>
             </ul>
             <div class="ms-auto d-flex">
@@ -182,13 +182,13 @@
                   class="btn btn-success"
                   type="button"
                   data-bs-toggle="modal"
-                  data-bs-target="#signupModal">Sign Up</button
+                  data-bs-target="#signupModal">Sign Up <i class="far fa-sign-in-alt"></i></button
                 >
                 <button
                   class="btn btn-success"
                   type="button"
                   data-bs-toggle="modal"
-                  data-bs-target="#loginModal">Login</button
+                  data-bs-target="#loginModal">Login <i class="fas fa-sign-in-alt"></i></button
                 >
               </div>
               <div class="dropdown">

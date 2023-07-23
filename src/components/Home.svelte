@@ -63,18 +63,18 @@
                     <div class="btn-group">
                         <a
                             class="btn btn-primary"
-                            href="/drive/{latestDrive.id}">Details</a
+                            href="/drive/{latestDrive.id}">Details <i class="fas fa-info-square"></i></a
                         ><a
                             class="btn btn-secondary"
                             href={latestDrive.map}
                             target="_blank"
-                            rel="noreferrer">Map</a
+                            rel="noreferrer">Map <i class="fas fa-map-marker-alt"></i></a
                         >
                     </div>
                 </div>
                 <div class="card-footer">
                     <p class="text-muted">
-                        posted on {new Date(latestDrive.created).toLocaleString()}
+                        <i class="fas fa-calendar-star"></i> posted on {new Date(latestDrive.created).toLocaleString()}
                     </p>
                 </div>
             </div>
