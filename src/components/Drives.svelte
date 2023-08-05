@@ -3,27 +3,51 @@
     import { pb } from "../pocketbase";
     import type { Campaign } from "../types";
     import Loader from "./Loader.svelte";
+    import type { ListResult } from "pocketbase";
 
     let drives: Campaign[];
+    let drivesData: ListResult<Campaign>;
+    let page: number = 1;
+    let pages: number[] = [1]
+
+    let box: HTMLDivElement;
 
     let sortOption = "-created";
 
     onMount(async () => {
-        drives = await pb
+        drivesData = await pb
             .collection("campaigns")
-            .getFullList<Campaign>({ sort: sortOption, expand: "createdUser" });
+            .getList<Campaign>(page, 5, {
+                sort: sortOption,
+                expand: "createdUser",
+            });
+        drives = drivesData.items;
+        for (let i = 1; i <= drivesData.totalPages; i++) {
+            pages[i-1] = i
+        }
     });
 
     let sortDrives = async () => {
-        drives = null
+        drives = null;
         drives = await pb
             .collection("campaigns")
             .getFullList<Campaign>({ sort: sortOption, expand: "createdUser" });
     };
+
+    let pageDrives = async (page_number: number) => {
+        drivesData = await pb
+            .collection("campaigns")
+            .getList<Campaign>(page_number, 5, {
+                sort: sortOption,
+                expand: "createdUser",
+            });
+        drives = drivesData.items;
+		box.scrollIntoView();
+    }
 </script>
 
 <main>
-    <h3>All Campaigns or Drives to Join</h3>
+    <h3 bind:this={box}>All Campaigns or Drives to Join</h3>
     <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
         explicabo sunt repellendus laborum architecto perspiciatis omnis, odio
@@ -40,7 +64,7 @@
             bind:value={sortOption}
             on:change={sortDrives}
         >
-            <option selected>Sort By</option>
+            <option selected disabled>Sort By</option>
             <option value="-created">Latest Created</option>
             <option value="+created">Oldest Created</option>
             <option value="-updated">Latest Updated</option>
@@ -48,7 +72,7 @@
         </select>
     </div>
     <hr />
-    <div id="drives">
+    <div id="drives" >
         {#if drives}
             {#each drives as drive}
                 <div class="card min-vw-25 mb-4">
@@ -81,8 +105,28 @@
                     </div>
                 </div>
             {/each}
+            {#if drivesData.page !== 0}
+                <nav
+                    aria-label="Page navigation example"
+                    class="d-flex align-items-center justify-content-center"
+                >
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <button class="page-link p-2"><span aria-hidden="true">&laquo;</span></button>
+                        </li>   
+                        {#each pages as page_number}
+                            <li class="page-item">
+                                <button class="page-link p-2" on:click={() => pageDrives(page_number)}>{page_number}</button>
+                            </li>                            
+                        {/each}
+                        <li class="page-item">
+                            <button class="page-link p-2"><span aria-hidden="true">&raquo;</span></button>
+                        </li> 
+                    </ul>
+                </nav>
+            {/if}
         {:else}
-            <Loader/>
+            <Loader />
         {/if}
     </div>
 </main>
